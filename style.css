@@ -1646,13 +1646,16 @@ tbody tr:last-child td {
     gap: 18px;
 }
 
-.intelligence-card {
-    min-height: 300px;
+.intelligence-card{
+    min-height:300px;
+    padding:18px;
+    overflow:hidden;
 }
 
-.ranking-list {
-    padding: 10px 18px 18px;
-    display: grid;
+.ranking-list{
+    padding:8px 0;
+    display:grid;
+    gap:10px;
 }
 
 .ranking-item {
@@ -2644,6 +2647,417 @@ body.dark-mode input[type="date"] {
 
     .alert-title-row {
         flex-direction: column;
+    }
+}
+/* ===============================
+   Sales Intelligence Layout Fix
+=================================*/
+
+.intelligence-card .content-card,
+.intelligence-card .table-wrapper,
+.intelligence-card .ranking-list{
+    padding:12px;
+}
+
+.intelligence-card .ranking-item{
+    padding:14px;
+    border-radius:12px;
+    margin-bottom:10px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.02);
+}
+
+.intelligence-card strong{
+    display:block;
+    margin-bottom:6px;
+}
+
+.intelligence-card p,
+.intelligence-card span{
+    line-height:1.6;
+    word-break:break-word;
+}
+
+.intelligence-card{
+    overflow-y:auto;
+}
+
+/* =========================================================
+   Sales Intelligence — Professional Redesign
+   Added 2026-07
+========================================================= */
+
+#salesIntelligencePage {
+    --intelligence-card-bg: #ffffff;
+    --intelligence-soft-bg: #f8fafc;
+    --intelligence-border: #e2e8f0;
+    --intelligence-shadow: 0 10px 28px rgba(15, 23, 42, 0.07);
+}
+
+#salesIntelligencePage .intelligence-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    align-items: stretch;
+}
+
+#salesIntelligencePage .intelligence-card {
+    min-width: 0;
+    min-height: 430px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--intelligence-card-bg);
+    border: 1px solid var(--intelligence-border);
+    border-radius: 20px;
+    box-shadow: var(--intelligence-shadow);
+}
+
+#salesIntelligencePage .intelligence-card .card-header {
+    min-height: 72px;
+    padding: 19px 21px;
+    position: relative;
+    flex: 0 0 auto;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    border-bottom: 1px solid var(--intelligence-border);
+}
+
+#salesIntelligencePage .intelligence-card .card-header::before {
+    content: "";
+    width: 4px;
+    height: 28px;
+    position: absolute;
+    inset-inline-start: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 0 6px 6px 0;
+    background: var(--primary);
+}
+
+html[dir="rtl"] #salesIntelligencePage .intelligence-card .card-header::before {
+    border-radius: 6px 0 0 6px;
+}
+
+#salesIntelligencePage .intelligence-card h3 {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+}
+
+#salesIntelligencePage .intelligence-list {
+    min-height: 0;
+    max-height: 470px;
+    padding: 15px;
+    display: grid;
+    align-content: start;
+    gap: 11px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+
+#salesIntelligencePage .intelligence-list-item {
+    min-width: 0;
+    padding: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    border: 1px solid var(--intelligence-border);
+    border-radius: 16px;
+    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#salesIntelligencePage .intelligence-list-item:hover {
+    transform: translateY(-2px);
+    border-color: rgba(23, 107, 135, 0.28);
+    box-shadow: 0 9px 20px rgba(15, 23, 42, 0.08);
+}
+
+#salesIntelligencePage .intelligence-rank,
+#salesIntelligencePage .intelligence-item-icon {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+#salesIntelligencePage .intelligence-rank {
+    color: var(--primary-dark);
+    background: var(--primary-light);
+    border: 1px solid rgba(23, 107, 135, 0.12);
+}
+
+#salesIntelligencePage .intelligence-item-icon {
+    color: var(--primary);
+    background: var(--primary-light);
+}
+
+#salesIntelligencePage .customer-credit .intelligence-item-icon,
+#salesIntelligencePage .customer-risk .intelligence-item-icon {
+    color: var(--danger);
+    background: var(--danger-light);
+}
+
+#salesIntelligencePage .customer-inactive .intelligence-item-icon {
+    color: var(--warning);
+    background: var(--warning-light);
+}
+
+#salesIntelligencePage .branch-icon {
+    color: var(--purple);
+    background: var(--purple-light);
+}
+
+#salesIntelligencePage .intelligence-item-main {
+    min-width: 0;
+    flex: 1;
+}
+
+#salesIntelligencePage .intelligence-item-header {
+    min-width: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+#salesIntelligencePage .intelligence-item-identity {
+    min-width: 0;
+    flex: 1;
+}
+
+#salesIntelligencePage .intelligence-item-identity strong {
+    display: block;
+    overflow: hidden;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.45;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#salesIntelligencePage .intelligence-item-identity small {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    color: var(--text-secondary);
+    font-size: 10px;
+}
+
+#salesIntelligencePage .intelligence-item-identity small i {
+    color: var(--text-muted);
+    font-size: 9px;
+}
+
+#salesIntelligencePage .intelligence-meta-separator {
+    color: var(--border-strong);
+}
+
+#salesIntelligencePage .status-badge {
+    min-width: max-content;
+    flex: 0 0 auto;
+    padding: 5px 10px;
+    font-size: 10px;
+    box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.04);
+}
+
+#salesIntelligencePage .intelligence-metric-grid,
+#salesIntelligencePage .intelligence-detail-grid {
+    margin-top: 13px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+}
+
+#salesIntelligencePage .intelligence-metric,
+#salesIntelligencePage .intelligence-detail-item {
+    min-width: 0;
+    padding: 9px 10px;
+    background: var(--intelligence-soft-bg);
+    border: 1px solid #edf2f7;
+    border-radius: 11px;
+}
+
+#salesIntelligencePage .intelligence-metric span,
+#salesIntelligencePage .intelligence-detail-item span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-secondary);
+    font-size: 9px;
+    font-weight: 700;
+}
+
+#salesIntelligencePage .intelligence-detail-item span i {
+    color: var(--primary);
+    font-size: 9px;
+}
+
+#salesIntelligencePage .intelligence-metric strong,
+#salesIntelligencePage .intelligence-detail-item strong {
+    margin-top: 4px;
+    display: block;
+    overflow: hidden;
+    color: var(--text-primary);
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#salesIntelligencePage .intelligence-progress-row {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: auto minmax(80px, 1fr);
+    align-items: center;
+    gap: 10px;
+}
+
+#salesIntelligencePage .intelligence-progress-row > span {
+    color: var(--text-muted);
+    font-size: 9px;
+    font-weight: 700;
+}
+
+#salesIntelligencePage .intelligence-progress-row .progress-track {
+    height: 7px;
+    margin-top: 0;
+}
+
+#salesIntelligencePage .performance-high .progress-value {
+    background: linear-gradient(90deg, #16a34a, #4ade80);
+}
+
+#salesIntelligencePage .performance-medium .progress-value {
+    background: linear-gradient(90deg, #d97706, #fbbf24);
+}
+
+#salesIntelligencePage .performance-low .progress-value {
+    background: linear-gradient(90deg, #dc2626, #fb7185);
+}
+
+#salesIntelligencePage .intelligence-primary-value {
+    max-width: 48%;
+    overflow: hidden;
+    color: var(--primary-dark);
+    font-size: 12px;
+    font-weight: 900;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#salesIntelligencePage .intelligence-branch-stats {
+    margin-top: 13px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+#salesIntelligencePage .intelligence-branch-stats > span {
+    padding: 7px 9px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    background: var(--intelligence-soft-bg);
+    border: 1px solid #edf2f7;
+    border-radius: 10px;
+    font-size: 9px;
+}
+
+#salesIntelligencePage .intelligence-branch-stats i {
+    color: var(--primary);
+}
+
+#salesIntelligencePage .intelligence-branch-stats strong {
+    color: var(--text-primary);
+    font-size: 10px;
+}
+
+#salesIntelligencePage .empty-state {
+    min-height: 280px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+#salesIntelligencePage .empty-state i {
+    width: 54px;
+    height: 54px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    background: var(--primary-light);
+    border-radius: 17px;
+    font-size: 20px;
+}
+
+#salesIntelligencePage .intelligence-card-topSalesmenList .card-header::before {
+    background: var(--success);
+}
+
+#salesIntelligencePage .intelligence-card-lowestSalesmenList .card-header::before,
+#salesIntelligencePage .intelligence-card-riskCustomersList .card-header::before,
+#salesIntelligencePage .intelligence-card-overCreditCustomersList .card-header::before {
+    background: var(--danger);
+}
+
+#salesIntelligencePage .intelligence-card-inactiveCustomersList .card-header::before {
+    background: var(--warning);
+}
+
+#salesIntelligencePage .intelligence-card-topBranchesList .card-header::before {
+    background: var(--purple);
+}
+
+@media (max-width: 1100px) {
+    #salesIntelligencePage .intelligence-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #salesIntelligencePage .intelligence-card {
+        min-height: 390px;
+    }
+}
+
+@media (max-width: 640px) {
+    #salesIntelligencePage .intelligence-list {
+        padding: 11px;
+    }
+
+    #salesIntelligencePage .intelligence-list-item {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    #salesIntelligencePage .intelligence-metric-grid,
+    #salesIntelligencePage .intelligence-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #salesIntelligencePage .intelligence-item-header {
+        gap: 8px;
+    }
+
+    #salesIntelligencePage .intelligence-primary-value {
+        max-width: 44%;
+        font-size: 10px;
     }
 }
 

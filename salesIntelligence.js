@@ -1006,8 +1006,15 @@ window.DashboardSalesIntelligence = (() => {
                   ? "status-warning"
                   : "status-danger";
 
+        const performanceClass =
+            achievement >= 100
+                ? "performance-high"
+                : achievement >= 70
+                  ? "performance-medium"
+                  : "performance-low";
+
         return `
-            <div class="intelligence-list-item">
+            <div class="intelligence-list-item intelligence-salesman-item ${performanceClass}">
 
                 <div class="intelligence-rank">
                     ${index + 1}
@@ -1016,21 +1023,21 @@ window.DashboardSalesIntelligence = (() => {
                 <div class="intelligence-item-main">
 
                     <div class="intelligence-item-header">
-
-                        <div>
-                            <strong>
+                        <div class="intelligence-item-identity">
+                            <strong title="${escapeHTML(salesman.salesmanName)}">
                                 ${escapeHTML(
                                     salesman.salesmanName
                                 )}
                             </strong>
 
                             <small>
+                                <i class="fa-solid fa-id-badge"></i>
                                 ${escapeHTML(
                                     salesman.salesmanCode
                                 )}
                                 ${
                                     salesman.branch
-                                        ? `— ${escapeHTML(
+                                        ? `<span class="intelligence-meta-separator">•</span><i class="fa-solid fa-location-dot"></i>${escapeHTML(
                                               salesman.branch
                                           )}`
                                         : ""
@@ -1045,54 +1052,31 @@ window.DashboardSalesIntelligence = (() => {
                                 )
                             )}
                         </span>
-
                     </div>
 
-                    <div class="intelligence-values">
-                        <span>
-                            ${escapeHTML(
-                                utils.t(
-                                    "targets.sales",
-                                    "المبيعات"
-                                )
-                            )}:
-                            <strong>
-                                ${escapeHTML(
-                                    formatCurrency(
-                                        salesman.sales
-                                    )
-                                )}
-                            </strong>
-                        </span>
+                    <div class="intelligence-metric-grid">
+                        <div class="intelligence-metric">
+                            <span>${escapeHTML(utils.t("targets.sales", "المبيعات"))}</span>
+                            <strong>${escapeHTML(formatCurrency(salesman.sales))}</strong>
+                        </div>
 
-                        <span>
-                            ${escapeHTML(
-                                utils.t(
-                                    "targets.monthlyTarget",
-                                    "الهدف الشهري"
-                                )
-                            )}:
-                            <strong>
-                                ${escapeHTML(
-                                    formatCurrency(
-                                        salesman.target
-                                    )
-                                )}
-                            </strong>
-                        </span>
+                        <div class="intelligence-metric">
+                            <span>${escapeHTML(utils.t("targets.monthlyTarget", "الهدف الشهري"))}</span>
+                            <strong>${escapeHTML(formatCurrency(salesman.target))}</strong>
+                        </div>
                     </div>
 
-                    <div class="progress-track">
-                        <div
-                            class="progress-value"
-                            style="width: ${getProgressWidth(
-                                achievement
-                            )}%"
-                        ></div>
+                    <div class="intelligence-progress-row">
+                        <span>${escapeHTML(utils.t("targets.achievement", "نسبة الإنجاز"))}</span>
+                        <div class="progress-track">
+                            <div
+                                class="progress-value"
+                                style="width: ${getProgressWidth(achievement)}%"
+                            ></div>
+                        </div>
                     </div>
 
                 </div>
-
             </div>
         `;
     }
@@ -1102,63 +1086,45 @@ window.DashboardSalesIntelligence = (() => {
         index
     ) {
         return `
-            <div class="intelligence-list-item">
-
+            <div class="intelligence-list-item intelligence-branch-item">
                 <div class="intelligence-rank">
                     ${index + 1}
                 </div>
 
+                <div class="intelligence-item-icon branch-icon">
+                    <i class="fa-solid fa-store"></i>
+                </div>
+
                 <div class="intelligence-item-main">
-
                     <div class="intelligence-item-header">
-                        <div>
-                            <strong>
-                                ${escapeHTML(
-                                    branch.branch
-                                )}
+                        <div class="intelligence-item-identity">
+                            <strong title="${escapeHTML(branch.branch)}">
+                                ${escapeHTML(branch.branch)}
                             </strong>
-
                             <small>
-                                ${escapeHTML(
-                                    `${utils.formatNumber(
-                                        branch.invoiceCount
-                                    )} ${utils.t(
-                                        "dashboard.invoiceCount",
-                                        "فاتورة"
-                                    )}`
-                                )}
+                                <i class="fa-regular fa-file-lines"></i>
+                                ${escapeHTML(`${utils.formatNumber(branch.invoiceCount)} ${utils.t("dashboard.invoiceCount", "فاتورة")}`)}
                             </small>
                         </div>
 
-                        <strong>
-                            ${escapeHTML(
-                                formatCurrency(
-                                    branch.sales
-                                )
-                            )}
+                        <strong class="intelligence-primary-value">
+                            ${escapeHTML(formatCurrency(branch.sales))}
                         </strong>
                     </div>
 
-                    <div class="intelligence-values">
+                    <div class="intelligence-branch-stats">
                         <span>
-                            ${escapeHTML(
-                                utils.t(
-                                    "dashboard.activeCustomers",
-                                    "العملاء"
-                                )
-                            )}:
-                            <strong>
-                                ${escapeHTML(
-                                    utils.formatNumber(
-                                        branch.customerCount
-                                    )
-                                )}
-                            </strong>
+                            <i class="fa-solid fa-users"></i>
+                            ${escapeHTML(utils.t("dashboard.activeCustomers", "العملاء"))}
+                            <strong>${escapeHTML(utils.formatNumber(branch.customerCount))}</strong>
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-receipt"></i>
+                            ${escapeHTML(utils.t("dashboard.invoiceCount", "الفواتير"))}
+                            <strong>${escapeHTML(utils.formatNumber(branch.invoiceCount))}</strong>
                         </span>
                     </div>
-
                 </div>
-
             </div>
         `;
     }
@@ -1168,188 +1134,111 @@ window.DashboardSalesIntelligence = (() => {
         type
     ) {
         let badgeText = "";
-        let badgeClass =
-            "status-warning";
-        let details = "";
+        let badgeClass = "status-warning";
+        let iconClass = "fa-building-user";
+        let itemClass = "customer-inactive";
+        let detailItems = [];
 
-        if (
-            type ===
-            "inactive"
-        ) {
+        if (type === "inactive") {
             badgeText =
-                customer.inactiveDays ===
-                null
-                    ? utils.t(
-                          "common.notAvailable",
-                          "غير متاح"
-                      )
-                    : `${utils.formatNumber(
-                          customer.inactiveDays
-                      )} ${utils.t(
-                          "common.day",
-                          "يوم"
-                      )}`;
+                customer.inactiveDays === null
+                    ? utils.t("common.notAvailable", "غير متاح")
+                    : `${utils.formatNumber(customer.inactiveDays)} ${utils.t("common.day", "يوم")}`;
 
-            details = `
-                ${escapeHTML(
-                    utils.t(
-                        "salesmanProfiles.lastPurchase",
-                        "آخر شراء"
-                    )
-                )}:
-                <strong>
-                    ${escapeHTML(
-                        formatDate(
-                            customer.lastPurchase
-                        )
-                    )}
-                </strong>
-            `;
+            iconClass = "fa-user-clock";
+            itemClass = "customer-inactive";
+            detailItems = [
+                {
+                    icon: "fa-calendar-days",
+                    label: utils.t("salesmanProfiles.lastPurchase", "آخر شراء"),
+                    value: formatDate(customer.lastPurchase)
+                },
+                {
+                    icon: "fa-chart-line",
+                    label: utils.t("targets.sales", "المبيعات"),
+                    value: formatCurrency(customer.sales)
+                }
+            ];
         }
 
-        if (
-            type ===
-            "credit"
-        ) {
-            badgeText =
-                formatCurrency(
-                    customer.overCreditAmount
-                );
-
-            badgeClass =
-                "status-danger";
-
-            details = `
-                ${escapeHTML(
-                    utils.t(
-                        "salesmanProfiles.creditLimit",
-                        "الحد الائتماني"
-                    )
-                )}:
-                <strong>
-                    ${escapeHTML(
-                        formatCurrency(
-                            customer.creditLimit
-                        )
-                    )}
-                </strong>
-                —
-                ${escapeHTML(
-                    utils.t(
-                        "dashboard.outstanding",
-                        "الرصيد"
-                    )
-                )}:
-                <strong>
-                    ${escapeHTML(
-                        formatCurrency(
-                            customer.balance
-                        )
-                    )}
-                </strong>
-            `;
+        if (type === "credit") {
+            badgeText = formatCurrency(customer.overCreditAmount);
+            badgeClass = "status-danger";
+            iconClass = "fa-credit-card";
+            itemClass = "customer-credit";
+            detailItems = [
+                {
+                    icon: "fa-shield-halved",
+                    label: utils.t("salesmanProfiles.creditLimit", "الحد الائتماني"),
+                    value: formatCurrency(customer.creditLimit)
+                },
+                {
+                    icon: "fa-wallet",
+                    label: utils.t("dashboard.outstanding", "الرصيد"),
+                    value: formatCurrency(customer.balance)
+                }
+            ];
         }
 
-        if (
-            type ===
-            "risk"
-        ) {
+        if (type === "risk") {
             badgeText =
                 customer.overdueDays > 0
-                    ? `${utils.formatNumber(
-                          customer.overdueDays
-                      )} ${utils.t(
-                          "common.day",
-                          "يوم"
-                      )}`
-                    : formatCurrency(
-                          customer.overdue
-                      );
+                    ? `${utils.formatNumber(customer.overdueDays)} ${utils.t("common.day", "يوم")}`
+                    : formatCurrency(customer.overdue);
 
             badgeClass =
                 customer.overdueDays > 90
                     ? "status-danger"
                     : "status-warning";
-
-            details = `
-                ${escapeHTML(
-                    utils.t(
-                        "dashboard.overdue",
-                        "المتأخر"
-                    )
-                )}:
-                <strong>
-                    ${escapeHTML(
-                        formatCurrency(
-                            customer.overdue
-                        )
-                    )}
-                </strong>
-                —
-                ${escapeHTML(
-                    utils.t(
-                        "dashboard.collections",
-                        "التحصيلات"
-                    )
-                )}:
-                <strong>
-                    ${escapeHTML(
-                        formatCurrency(
-                            customer.collections
-                        )
-                    )}
-                </strong>
-            `;
+            iconClass = "fa-triangle-exclamation";
+            itemClass = "customer-risk";
+            detailItems = [
+                {
+                    icon: "fa-clock-rotate-left",
+                    label: utils.t("dashboard.overdue", "المتأخر"),
+                    value: formatCurrency(customer.overdue)
+                },
+                {
+                    icon: "fa-hand-holding-dollar",
+                    label: utils.t("dashboard.collections", "التحصيلات"),
+                    value: formatCurrency(customer.collections)
+                }
+            ];
         }
 
         return `
-            <div class="intelligence-list-item">
-
+            <div class="intelligence-list-item intelligence-customer-item ${itemClass}">
                 <div class="intelligence-item-icon">
-                    <i class="fa-solid fa-building-user"></i>
+                    <i class="fa-solid ${iconClass}"></i>
                 </div>
 
                 <div class="intelligence-item-main">
-
                     <div class="intelligence-item-header">
-
-                        <div>
-                            <strong>
-                                ${escapeHTML(
-                                    customer.customerName
-                                )}
+                        <div class="intelligence-item-identity">
+                            <strong title="${escapeHTML(customer.customerName)}">
+                                ${escapeHTML(customer.customerName)}
                             </strong>
 
                             <small>
-                                ${escapeHTML(
-                                    customer.customerCode
-                                )}
-                                ${
-                                    customer.branch
-                                        ? `— ${escapeHTML(
-                                              customer.branch
-                                          )}`
-                                        : ""
-                                }
+                                ${customer.customerCode ? `<i class="fa-solid fa-hashtag"></i>${escapeHTML(customer.customerCode)}` : ""}
+                                ${customer.branch ? `<span class="intelligence-meta-separator">•</span><i class="fa-solid fa-location-dot"></i>${escapeHTML(customer.branch)}` : ""}
                             </small>
                         </div>
 
                         <span class="status-badge ${badgeClass}">
-                            ${escapeHTML(
-                                badgeText
-                            )}
-                        </span>
-
-                    </div>
-
-                    <div class="intelligence-values">
-                        <span>
-                            ${details}
+                            ${escapeHTML(badgeText)}
                         </span>
                     </div>
 
+                    <div class="intelligence-detail-grid">
+                        ${detailItems.map(item => `
+                            <div class="intelligence-detail-item">
+                                <span><i class="fa-solid ${item.icon}"></i>${escapeHTML(item.label)}</span>
+                                <strong>${escapeHTML(item.value)}</strong>
+                            </div>
+                        `).join("")}
+                    </div>
                 </div>
-
             </div>
         `;
     }
@@ -1366,11 +1255,17 @@ window.DashboardSalesIntelligence = (() => {
             return;
         }
 
+        container.classList.add("intelligence-list");
+        container.dataset.listType = elementId;
+
+        const card = container.closest(".intelligence-card");
+        if (card) {
+            card.classList.add(`intelligence-card-${elementId}`);
+        }
+
         container.innerHTML =
             rows.length
-                ? rows
-                      .map(renderer)
-                      .join("")
+                ? rows.map(renderer).join("")
                 : getEmptyState();
     }
 
@@ -1403,8 +1298,15 @@ window.DashboardSalesIntelligence = (() => {
                 )
                 .slice(0, 5);
 
+        const underperformingSalesmen =
+            validSalesmen.filter(
+                row =>
+                    row.target > 0 &&
+                    row.achievement < 100
+            );
+
         const lowestSalesmen =
-            [...validSalesmen]
+            [...underperformingSalesmen]
                 .sort(
                     (
                         first,
