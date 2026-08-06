@@ -524,6 +524,7 @@ window.DashboardApp = (() => {
         );
 
         /*
+<<<<<<< HEAD
          * صفحة Targets يجب أن تحسب التحقيق حسب الشهر المختار
          * في الفلاتر، وليس حسب تاريخ اليوم.
          * نستخدم تاريخ النهاية أولاً لأنه يمثل الشهر المعروض،
@@ -540,6 +541,17 @@ window.DashboardApp = (() => {
             typeof targetReferenceDate === "string"
                 ? `${targetReferenceDate}T12:00:00`
                 : targetReferenceDate
+=======
+         * اجعل صفحة التارجت تعتمد على الشهر المختار في الفلتر،
+         * وليس على شهر تاريخ اليوم الحالي.
+         */
+        callModule(
+            window.DashboardTargets,
+            "setReferenceDate",
+            data?.filters?.dateTo ||
+                data?.filters?.dateFrom ||
+                new Date()
+>>>>>>> d8ec4df (Fix previous month target achievement)
         );
 
         callModule(
