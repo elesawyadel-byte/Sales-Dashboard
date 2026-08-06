@@ -523,6 +523,25 @@ window.DashboardApp = (() => {
             data.dueOverdue
         );
 
+        /*
+         * صفحة Targets يجب أن تحسب التحقيق حسب الشهر المختار
+         * في الفلاتر، وليس حسب تاريخ اليوم.
+         * نستخدم تاريخ النهاية أولاً لأنه يمثل الشهر المعروض،
+         * ثم تاريخ البداية عند عدم وجود تاريخ نهاية.
+         */
+        const targetReferenceDate =
+            data?.filters?.dateTo ||
+            data?.filters?.dateFrom ||
+            new Date();
+
+        callModule(
+            window.DashboardTargets,
+            "setReferenceDate",
+            typeof targetReferenceDate === "string"
+                ? `${targetReferenceDate}T12:00:00`
+                : targetReferenceDate
+        );
+
         callModule(
             window.DashboardTargets,
             "setTargets",
